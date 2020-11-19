@@ -4,42 +4,64 @@ import { GlobalContext } from '../../context/GlobalState';
 
 import Chart from '../../../../node_modules/chart.js';
 
-export const ChartComp = ({repos}) => {
+export const ChartComp = ({ transactions }) => {
 
-    const { incomeTransactionsChart } = useContext(GlobalContext);
-    const { transactions } = useContext(GlobalContext);
+    const income = transactions
+        .filter(item => item.expenseType == 0)
+        .reduce((acc, item) => (acc += item.amount), 0)
+        .toFixed(2);
 
-    const { expenseTransactionsChart } = useContext(GlobalContext);
-    //const amounts = transactions.map(transaction => transaction.amount);
+    const expense = (
+        transactions.filter(item => item.expenseType > 0).reduce((acc, item) => (acc += item.amount), 0)
+    ).toFixed(2);
 
-    //console.log(amounts);
 
+    const incomeList = transactions.filter(item => item.expenseType == 0);
 
-    //const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
- 
+    const expenseList = transactions.filter(item => item.expenseType > 0);
 
     const [IncomeChartElement, setIncomeChartElement] = useState(document.getElementById('incomeChart'));
     const [ExpenseChartElement, setExpenseChartElement] = useState(document.getElementById('expenseChart'));
-    
+
     useEffect(() => {
-        console.log(repos);
-        console.log('use effect chart');
-        const ch = display_chart(transactions, 'incomeChart');
-        const eh = display_chart(expenseTransactionsChart, 'expenseChart');
+
+        const ch = display_chart(incomeList, 'incomeChart');
+        const eh = display_chart(expenseList, 'expenseChart');
         setIncomeChartElement(ch);
         setExpenseChartElement(eh);
-    }, [transactions, expenseTransactionsChart]);
+    }, [incomeList, expenseList]);
 
 
 
     return (
-        <div>
-            <div>
-                <canvas id="incomeChart" width="400" height="400"></canvas>
-            </div>
-            <div>
-                <canvas id="expenseChart" width="400" height="400"></canvas>
-            </div>
+        <div className="inc-exp-container">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                <h4>Income</h4>
+                                <p className="money plus">+${income}</p>
+                            </div>
+                            <div>
+                                <canvas id="incomeChart" width="400" height="400"></canvas>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <h4>Expense</h4>
+                                <p className="money minus">-${expense}</p>
+                            </div>
+                            <div>
+                                <canvas id="expenseChart" width="400" height="400"></canvas>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+
         </div>
     )
 }
@@ -54,10 +76,16 @@ function display_chart(data1, id) {
         let backgroundColor_data = []
         let borderColor_data = []
         for (let i = 0; i < data1.length; i++) {
-            labels_data.push(data1[i].cat_name)
-            data_data.push(parseInt(data1[i]['amount']))
-            backgroundColor_data.push(data1[i]['backgroundColor'])
-            borderColor_data.push(data1[i]['borderColor'])
+            var index = labels_data.indexOf(data1[i].categories.name);
+            if (index == -1) {
+                labels_data.push(data1[i].categories.name)
+                data_data.push(parseInt(data1[i]['amount']))
+                backgroundColor_data.push(data1[i].categories['backgroundColor'])
+                borderColor_data.push(data1[i].categories['borderColor'])
+            }
+            else{
+                data_data[index]+=parseInt(data1[i]['amount']);
+            }
         }
 
         if (chartelem) {

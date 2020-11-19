@@ -35,6 +35,9 @@ Route::group([
         Route::get('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
         Route::get('/user', [App\Http\Controllers\API\AuthController::class, 'user']);
         Route::get('/userExpenses', [App\Http\Controllers\API\UserExpenses::class, 'UserExpenses']);
+        Route::get('/GetCategories', [App\Http\Controllers\API\UserExpenses::class, 'getCategories']);
+        Route::post('/addTransaction', [App\Http\Controllers\API\UserExpenses::class, 'addTransaction']);  
+        Route::delete('/deleteTransaction', [App\Http\Controllers\API\UserExpenses::class, 'deleteTransaction']);  
         //Route::get('logout', 'AuthController@logout');
         //Route::get('user', 'AuthController@user');
     });

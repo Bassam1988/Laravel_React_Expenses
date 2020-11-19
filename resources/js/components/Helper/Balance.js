@@ -1,21 +1,30 @@
 import React, { useContext } from 'react';
 
-import { GlobalContext } from '../context/GlobalState';
 
-export const Balance = () => {
-    const { transactions } = useContext(GlobalContext);
-    const amounts = transactions.map(transaction => transaction.amount);
-    const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+
+export const Balance = ({ transactions }) => {
+
+
+    const income = transactions
+        .filter(item => item.expenseType == 0)
+        .reduce((acc, item) => (acc += item.amount), 0)
+        .toFixed(2);
+
+    const expense = (
+        transactions.filter(item => item.expenseType > 0).reduce((acc, item) => (acc += item.amount), 0) 
+    ).toFixed(2);
+
+    const total = (income - expense).toFixed(2);
 
     return (
         <>
-            <h4>
-                Your Balance
-        </h4>
-
             <h1>
-                ${total}
+                Your Balance
             </h1>
+
+            <h4>
+                ${total}
+            </h4>
         </>
     )
 }

@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Expenses extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'amount',
+        'user_id',
+        'categories_id',
+        'expenseType',
+    ];
 
     public function user()
     {

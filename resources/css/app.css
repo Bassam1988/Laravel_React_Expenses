@@ -111,6 +111,13 @@ input[type='number'] {
   margin-bottom: 40px;
 }
 
+.Tcontent{
+  margin: 40px 40px 40px 40px;
+  padding: 10px;
+}
+
+.navbar-light{ background-color: "#e3f2fd"}
+
 .list li {
   background-color: #fff;
   box-shadow: var(--box-shadow);

@@ -1,27 +1,30 @@
 
-import '../../css/app.css';
+import '../../../css/app.css';
 import {Header} from './Header';
 import {Balance} from './Balance';
 import {IncomeExenses} from './IncomeExpenses';
 import {TransactionList} from './TransactionList';
 import {AddTransaction} from './AddTransaction';
 import {ChartComp} from './ChartComp';
-import React from 'react';
+import React ,{useContext, useEffect} from 'react';
 
-import {GlobalProvider} from '../context/GlobalState';
+import {GlobalProvider} from '../../context/GlobalState';
+import {GlobalContext} from '../../context/GlobalState';
 
-function App() {
+
+function App({Expenses}) {
+
+  const { getTransaction } = useContext(GlobalContext);
+  
+
+  useEffect(() => {
+
+    getTransaction(Expenses);
+}, []);
   return (
     <GlobalProvider >
-      <Header/>
-      <div id="container1">
-        <Balance/>
-        <IncomeExenses/>
-        <TransactionList/>
-        <AddTransaction/>
-        <ChartComp/>
-      </div>
-      
+     
+     <TransactionList/>
     </GlobalProvider>
   );
 }
