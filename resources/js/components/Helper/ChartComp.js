@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalState';
 
-import Chart from '../../../node_modules/chart.js';
+import Chart from '../../../../node_modules/chart.js';
 
-export const ChartComp = () => {
+export const ChartComp = ({repos}) => {
 
     const { incomeTransactionsChart } = useContext(GlobalContext);
     const { transactions } = useContext(GlobalContext);
@@ -16,12 +16,14 @@ export const ChartComp = () => {
 
 
     //const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
-    console.log(transactions);
-    console.log(expenseTransactionsChart);
+ 
 
     const [IncomeChartElement, setIncomeChartElement] = useState(document.getElementById('incomeChart'));
     const [ExpenseChartElement, setExpenseChartElement] = useState(document.getElementById('expenseChart'));
+    
     useEffect(() => {
+        console.log(repos);
+        console.log('use effect chart');
         const ch = display_chart(transactions, 'incomeChart');
         const eh = display_chart(expenseTransactionsChart, 'expenseChart');
         setIncomeChartElement(ch);
