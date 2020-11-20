@@ -44,6 +44,9 @@ class Header extends Component {
             {this.state.userIsLoggedIn ?
               <li className="nav-item active"><Link to="/dashboard">Dashboard</Link></li>
               : ""}
+               {this.state.userIsLoggedIn ?
+              <li className="nav-item active"><Link to="/search">Search</Link></li>
+              : ""}
             {this.state.userIsLoggedIn ?
               <li className="nav-item"><Link to="/logout">Logout</Link></li>
               : ""}

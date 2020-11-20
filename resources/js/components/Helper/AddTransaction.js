@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 //import { GlobalContext } from '../../context/GlobalState';
 
-export const AddTransaction = ({user}) => {
+export const AddTransaction = ({user,handlerChange}) => {
 
 
 
@@ -36,6 +36,8 @@ export const AddTransaction = ({user}) => {
         return response;
     }).then(json => {
         if (json.data.success) {
+          let newExpenses=json.data.expenses;
+           handlerChange(newExpenses);
            alert("you add new transaction successfully")
         } else {
             alert(`Our System Failed To Register Your Account!`);
@@ -55,13 +57,10 @@ export const AddTransaction = ({user}) => {
             let err = error.message;
             
         }
-    }).finally(this.setState({ error: '' }));
+    })
   }
 
   useEffect(() => {
-    console.log('use effect')
-
-    //axios.defaults.headers.common['Authorization'] = 'Bearer ' +  access_token
     axios.get("/api/auth/GetCategories").then(response => {
       return response;
     }).then(json => {

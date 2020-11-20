@@ -3,23 +3,16 @@ import React, { useContext } from 'react'
 
 //import { GlobalContext } from '../context/GlobalState';
 
-export const Transaction = ({ transaction }) => {
+export const Transaction = ({ transaction ,handlerChange}) => {
 
-   // const { deleteTransaction } = useContext(GlobalContext);
-    const sign = transaction.expenseType > 0 ? '-' : '+';
-    return (
-        <li className={transaction.expenseType > 0 ? 'minus' : 'plus'}>
-            {transaction.categories.name} <span>{datef(transaction.created_at)}</span> <span>{sign}${transaction.amount}</span><button onClick={() => deleteTransaction(transaction.id)} className="delete-btn">x</button>
-        </li>
-    )
-}
-
-function deleteTransaction(id)
+    function deleteTransaction(id)
 {
     axios.delete(`/api/auth/deleteTransaction/`,{params: {'id': id}})
     .then(res => {
         if(res.data.success)
         {
+            let newExpenses=res.data.expenses;
+            handlerChange(newExpenses);
             alert('you delete the transaction successfully');
         }
      // console.log(res);
@@ -30,6 +23,17 @@ function deleteTransaction(id)
     })
 
 }
+
+   // const { deleteTransaction } = useContext(GlobalContext);
+    const sign = transaction.expenseType > 0 ? '-' : '+';
+    return (
+        <li className={transaction.expenseType > 0 ? 'minus' : 'plus'}>
+            {transaction.categories.name} <span>{datef(transaction.created_at)}</span> <span>{sign}${transaction.amount}</span><button onClick={() => deleteTransaction(transaction.id)} className="delete-btn">x</button>
+        </li>
+    )
+}
+
+
 
 
 function datef(date)

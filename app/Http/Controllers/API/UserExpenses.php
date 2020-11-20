@@ -43,7 +43,9 @@ class UserExpenses extends Controller
 
         ]);
         $expense->save();
-        return response()->json([
+        $user=User::find($request->user_id);
+        $expenses=$user->withCategories();
+        return response()->json(['expenses' => $expenses,
             'message' => 'Successfully created user!', 'success' => '1',
         ], 201);
     }
@@ -51,8 +53,10 @@ class UserExpenses extends Controller
     public function deleteTransaction(Request $request)
     {
         $expense = Expenses::find($request->id);
+        $user=User::find($expense->user_id);
         $expense->delete();
-        return response()->json([
+        $expenses=$user->withCategories();
+        return response()->json(['expenses' => $expenses,
             'message' => 'Successfully created user!', 'success' => '1',
         ], 201);
 

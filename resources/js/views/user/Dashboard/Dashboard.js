@@ -23,7 +23,13 @@ class Home extends Component {
             errors: null,
             success: 0
         }
+        this.handleUserExpensesChange = this.handleUserExpensesChange.bind(this);
     }
+
+    handleUserExpensesChange(newExpenses) {
+        this.setState({ userExpenses: newExpenses })
+    }
+
     componentWillMount() {
         let state = localStorage["appState"];
         if (state) {
@@ -100,7 +106,7 @@ class Home extends Component {
 
                                                         <tr>
                                                             <td>
-                                                                <TransactionList transactions={userExpenses1} />
+                                                                <TransactionList transactions={userExpenses1} handlerChange={this.handleUserExpensesChange} />
                                                             </td>
 
                                                         </tr>
@@ -111,7 +117,7 @@ class Home extends Component {
                                                 <ChartComp transactions={userExpenses1} />
                                             </td>
                                             <td>
-                                                <AddTransaction transactions={userExpenses1} />
+                                                <AddTransaction user={this.state.user} handlerChange={this.handleUserExpensesChange} />
                                             </td>
                                         </tr>
                                     </tbody>

@@ -7,8 +7,7 @@ import Register from './views/Register/Register';
 import NotFound from './views/NotFound/NotFound'// User is LoggedIn
 import PrivateRoute from './PrivateRoute'
 import Dashboard from './views/user/Dashboard/Dashboard';
-import  App2 from './App2'
-import { Dashboard2 } from './views/user/Dashboard/Dashboard2';
+import Search from './views/user/Search';
 
 
 
@@ -22,6 +21,7 @@ const Main = props => (
         <Route path='/register' component={Register} />
         {/* User is LoggedIn*/}
         <PrivateRoute path='/dashboard' component={Dashboard} />
+        <PrivateRoute path='/search' component={Search} />
         <PrivateRoute path='/logout' component={Logout} />
         {/*Page Not Found*/}
         <Route component={NotFound} />
