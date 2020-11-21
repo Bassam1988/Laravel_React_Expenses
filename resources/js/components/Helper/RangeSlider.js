@@ -13,12 +13,13 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function RangeSlider() {
+export default function RangeSlider({getRangeValue}) {
   const classes = useStyles();
   const [value, setValue] = React.useState([200, 400]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    getRangeValue(newValue)
    
   };
 
