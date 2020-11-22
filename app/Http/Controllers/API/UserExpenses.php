@@ -26,6 +26,11 @@ class UserExpenses extends Controller
                 catUsed: 0,
                 filter: 0
             } */
+            $catFilter=[0,0];
+            $startDateFilter=[0,''];
+            $endDateFilter=[0,''];
+            $rangeFilter=[0,[]];
+            $expenseFilter=[0,0];   
         if (request('filter')) {
             $expenses = $user->withCategories();
             if(request('catUsed'))
@@ -33,43 +38,27 @@ class UserExpenses extends Controller
                 $catFilter=[1,request('catValue')];
                 //$expenses = $user->Filter(request('catValue'));
             }
-            else{
-                $catFilter=[0,0];
-            }
             if(request('startDateUsed'))
             {
                 $startDateFilter=[1,request('startDate')];
                 //$expenses = $user->Filter(request('catValue'));
             }
-            else{
-                $startDateFilter=[0,''];
-            }
-
             if(request('endDateUsed'))
             {
                 $endDateFilter=[1,request('endDate')];
                 //$expenses = $user->Filter(request('catValue'));
             }
-            else{
-                $endDateFilter=[0,''];
-            }
             if(request('rangeUsed'))
             {
-                $rangeFilter=[1,request('rangeValue')];
+                $rangeFilter=[1,request('rangeValueStart'),request('rangeValueEnd')];
                 //$expenses = $user->Filter(request('catValue'));
             }
-            else{
-                $rangeFilter=[0,[]];
-            }
+
             if(request('expenseUsed'))
             {
                 $expenseFilter=[1,request('expenseValue')];
                 //$expenses = $user->Filter(request('catValue'));
             }
-            else{
-                $expenseFilter=[1,request('expenseValue')];   
-            }
-         
             if (request('column')) {
                 $column = request('column');
                 $type = request('upOrDown');
@@ -86,7 +75,8 @@ class UserExpenses extends Controller
                 $column = request('column');
                 $type = request('upOrDown');
                 $expenses = $user->withCategoriesAndSort($column, $type);
-            } else {
+            } 
+            else {
                 $expenses = $user->withCategories();
             }
         }

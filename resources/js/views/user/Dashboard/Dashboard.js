@@ -39,7 +39,8 @@ class Home extends Component {
                 startDateUsed: 0,
                 endDate: new Date(),
                 endDateUsed: 0,
-                rangeValue: [],
+                rangeValueStart: 0,
+                rangeValueEnd: 0,
                 rangeUsed: 0,
                 expenseValue: '',
                 expenseUsed: 0,
@@ -89,12 +90,13 @@ class Home extends Component {
         this.setState({
             filterData: {
                 startDate: dateString, startDateUsed: 1,
-                endDateUsed: this.state.filterData.endDateUsed, 
-                endDate: this.state.filterData.endDate, 
+                endDateUsed: this.state.filterData.endDateUsed,
+                endDate: this.state.filterData.endDate,
                 catValue: this.state.filterData.catValue,
                 catUsed: this.state.filterData.catUsed,
                 rangeUsed: this.state.filterData.rangeUsed,
-                rangeValue: [100, 400],
+                rangeValueStart: this.state.filterData.rangeValueStart,
+                rangeValueEnd: this.state.filterData.rangeValueEnd,
                 expenseUsed: this.state.filterData.expenseUsed,
                 expenseValue: this.state.filterData.expenseValue,
                 filter: 1
@@ -103,53 +105,72 @@ class Home extends Component {
     }
 
     onChangeEndDate(jsDate, dateString) {
-        this.setState({ filterData: {
-            endDate: dateString, endDateUsed: 1,
-            startDate: this.state.filterData.startDate, 
-            startDateUsed: this.state.filterData.startDateUsed, 
-            catValue: this.state.filterData.catValue,
-            catUsed: this.state.filterData.catUsed,
-            rangeUsed: this.state.filterData.rangeUsed,
-            rangeValue: [100, 400],
-            expenseUsed: this.state.filterData.expenseUsed,
-            expenseValue: this.state.filterData.expenseValue, filter: 1 } });
+        this.setState({
+            filterData: {
+                endDate: dateString, endDateUsed: 1,
+                startDate: this.state.filterData.startDate,
+                startDateUsed: this.state.filterData.startDateUsed,
+                catValue: this.state.filterData.catValue,
+                catUsed: this.state.filterData.catUsed,
+                rangeUsed: this.state.filterData.rangeUsed,
+                rangeValueStart: this.state.filterData.rangeValueStart,
+                rangeValueEnd: this.state.filterData.rangeValueEnd,
+                expenseUsed: this.state.filterData.expenseUsed,
+                expenseValue: this.state.filterData.expenseValue, filter: 1
+            }
+        });
 
     }
 
     setExpenseType(expenseType) {
-        this.setState({ filterData: { expenseValue: expenseType, expenseUsed: 1, 
-            endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
-            startDate: this.state.filterData.startDate, 
-            startDateUsed: this.state.filterData.startDateUsed, 
-            catValue: this.state.filterData.catValue,
-            catUsed: this.state.filterData.catUsed,
-            rangeUsed: this.state.filterData.rangeUsed,
-            rangeValue: [100, 400],
-            filter: 1 } })
+        this.setState({
+            filterData: {
+                expenseValue: expenseType, expenseUsed: 1,
+                endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
+                startDate: this.state.filterData.startDate,
+                startDateUsed: this.state.filterData.startDateUsed,
+                catValue: this.state.filterData.catValue,
+                catUsed: this.state.filterData.catUsed,
+                rangeValueStart: this.state.filterData.rangeValueStart,
+                rangeValueEnd: this.state.filterData.rangeValueEnd,
+               
+                filter: 1
+            }
+        })
     }
 
     setcat_name(catId) {
-        this.setState({ filterData: { catValue: catId, catUsed: 1,
-            endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
-            startDate: this.state.filterData.startDate, 
-            startDateUsed: this.state.filterData.startDateUsed, 
-            rangeUsed: this.state.filterData.rangeUsed,
-            rangeValue: [100, 400],
-            expenseUsed: this.state.filterData.expenseUsed,
-            expenseValue: this.state.filterData.expenseValue, 
-            filter: 1 } })
+        this.setState({
+            filterData: {
+                catValue: catId, catUsed: 1,
+                endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
+                startDate: this.state.filterData.startDate,
+                startDateUsed: this.state.filterData.startDateUsed,
+                rangeUsed: this.state.filterData.rangeUsed,
+                rangeValueStart: this.state.filterData.rangeValueStart,
+                rangeValueEnd: this.state.filterData.rangeValueEnd,
+                expenseUsed: this.state.filterData.expenseUsed,
+                expenseValue: this.state.filterData.expenseValue,
+                filter: 1
+            }
+        })
     }
 
     getRange(rangeValue1) {
-        this.setState({ filterData: { rangeValue: rangeValue1, rangeUsed: 1,
-            endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
-            startDate: this.state.filterData.startDate, 
-            startDateUsed: this.state.filterData.startDateUsed, 
-            catValue: this.state.filterData.catValue,
-            catUsed: this.state.filterData.catUsed,
-            expenseUsed: this.state.filterData.expenseUsed,
-            expenseValue: this.state.filterData.expenseValue, 
-            filter: 1 } })
+        console.log(rangeValue1)
+        this.setState({
+            filterData: {
+                rangeValueStart: rangeValue1[0], rangeValueEnd: rangeValue1[1], rangeUsed: 1,
+                endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
+                startDate: this.state.filterData.startDate,
+                startDateUsed: this.state.filterData.startDateUsed,
+                catValue: this.state.filterData.catValue,
+                catUsed: this.state.filterData.catUsed,
+                expenseUsed: this.state.filterData.expenseUsed,
+                expenseValue: this.state.filterData.expenseValue,
+                filter: 1
+            }
+        })
     }
 
     componentDidMount() {

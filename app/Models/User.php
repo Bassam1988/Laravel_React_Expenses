@@ -61,7 +61,7 @@ class User extends Authenticatable
             $expen = $expen->where('created_at', '<', $endDateFilter[1]);
         }
         if ($rangeFilter[0]) {
-            $expen = $expen->where('amount', '>', $catFilter[1][0])->where('amount', '<', $catFilter[1][1]);
+            $expen = $expen->where('amount', '>', $rangeFilter[1])->where('amount', '<', $rangeFilter[2]);
         }
         if ($expenseFilter[0]) {
             $expen = $expen->where('expenseType', '=', $expenseFilter[1]);

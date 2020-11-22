@@ -156,7 +156,7 @@ export const TransactionList = ({ transactions, handlerChange, user, filterData 
             if (withSort == 1) {
                 params = { 'user_id': userID, 'page': page, 'column': 'Categories_id', 'upOrDown': 'ASC' }
             }
-            if (withSort == 1) {
+            if (withSort == 10) {
                 params = { 'user_id': userID, 'page': page, 'column': 'Categories_id', 'upOrDown': 'DESC' }
             }
             if (withSort == 2) {
@@ -175,6 +175,7 @@ export const TransactionList = ({ transactions, handlerChange, user, filterData 
         }
 
         if (filterData.filter) {
+            
             params = Object.assign({}, params, filterData);
             console.log(filterData)
             console.log(params)
