@@ -10,6 +10,7 @@ import RangeSlider from '../../../components/Helper/RangeSlider';
 import Calendar from 'react-calendar';
 
 import { DatePickerInput } from 'rc-datepicker';
+import { Pagination } from 'react-laravel-paginex'
 
 
 import 'react-calendar/dist/Calendar.css'
@@ -26,22 +27,26 @@ class Home extends Component {
             isLoggedIn: false,
             user: {},
             userExpenses: {},
+            userExpensesData: {},
             FilterUserExpense: {},
             isLoading: false,
             errors: null,
             success: 0,
             categories: {},
             successCat: 0,
-            startDate: new Date(),
-            startDateUsed: 0,
-            endDate: new Date(),
-            endDateUsed: 0,
-            rangeValue: [],
-            rangeUsed: 0,
-            expenseValue: '',
-            expenseUsed: 0,
-            catValue: -1,
-            catUsed: 0,
+            filterData: {
+                startDate: new Date(),
+                startDateUsed: 0,
+                endDate: new Date(),
+                endDateUsed: 0,
+                rangeValue: [],
+                rangeUsed: 0,
+                expenseValue: '',
+                expenseUsed: 0,
+                catValue: -1,
+                catUsed: 0,
+                filter: 0
+            }
 
         }
         this.handleUserExpensesChange = this.handleUserExpensesChange.bind(this);
@@ -57,12 +62,19 @@ class Home extends Component {
     }
 
     refreshFilterElement() {
-        this.setState({ FilterUserExpense: this.state.userExpenses, startDateUsed: 0, startDate: new Date, endDateUsed: 0, endDate: new Date, catValue: 0, catUsed: 0, rangeUsed: 0, rangeValue: [100, 400], expenseUsed: 0, expenseValue: '' })
+        this.setState({
+            FilterUserExpense: this.state.userExpensesData, filterData: {
+                startDateUsed: 0,
+                startDate: new Date, endDateUsed: 0, endDate: new Date, catValue: 0, catUsed: 0, rangeUsed: 0,
+                rangeValue: [100, 400], expenseUsed: 0, expenseValue: '', filter: 0
+            }
+        })
     }
 
     handleUserExpensesChange(newExpenses) {
         this.setState({ userExpenses: newExpenses })
-        this.setState({ FilterUserExpense: newExpenses })
+        this.setState({ userExpensesData: newExpenses.data })
+        this.setState({ FilterUserExpense: newExpenses.data })
     }
 
     componentWillMount() {
@@ -74,134 +86,70 @@ class Home extends Component {
     }// 4.1
 
     onChangeStartDate(jsDate, dateString) {
-        this.setState({ startDate: dateString, startDateUsed: 1 });
-
-        let expense = (
-            this.state.userExpenses.filter(item => item.created_at >= dateString))
-
-        if (this.state.catUsed) {
-            expense = (
-                expense.filter(item => item.categories_id == this.state.catValue))
-        }
-        if (this.state.rangeUsed) {
-            expense = (
-                expense.filter(item => this.state.rangeValue[0] <= item.amount <= this.state.rangeValue[1]))
-        }
-        if (this.state.expenseUsed) {
-            expense = (
-                userExpenses.filter(item => item.expenseType == this.state.expenseValue))
-        }
-        if (this.state.endDateUsed) {
-            expense = (
-                expense.filter(item => item.amount <= this.state.endDate))
-        }
-        this.setState({ FilterUserExpense: expense });
+        this.setState({
+            filterData: {
+                startDate: dateString, startDateUsed: 1,
+                endDateUsed: this.state.filterData.endDateUsed, 
+                endDate: this.state.filterData.endDate, 
+                catValue: this.state.filterData.catValue,
+                catUsed: this.state.filterData.catUsed,
+                rangeUsed: this.state.filterData.rangeUsed,
+                rangeValue: [100, 400],
+                expenseUsed: this.state.filterData.expenseUsed,
+                expenseValue: this.state.filterData.expenseValue,
+                filter: 1
+            }
+        });
     }
 
     onChangeEndDate(jsDate, dateString) {
-        this.setState({ endDate: dateString, endDateUsed: 1 });
-        let expense = (
-            this.state.userExpenses.filter(item => item.created_at <= dateString))
+        this.setState({ filterData: {
+            endDate: dateString, endDateUsed: 1,
+            startDate: this.state.filterData.startDate, 
+            startDateUsed: this.state.filterData.startDateUsed, 
+            catValue: this.state.filterData.catValue,
+            catUsed: this.state.filterData.catUsed,
+            rangeUsed: this.state.filterData.rangeUsed,
+            rangeValue: [100, 400],
+            expenseUsed: this.state.filterData.expenseUsed,
+            expenseValue: this.state.filterData.expenseValue, filter: 1 } });
 
-        if (this.state.catUsed) {
-            expense = (
-                expense.filter(item => item.categories_id == this.state.catValue))
-        }
-        if (this.state.rangeUsed) {
-            expense = (
-                expense.filter(item => this.state.rangeValue[0] <= item.amount <= this.state.rangeValue[1]))
-        }
-        if (this.state.expenseUsed) {
-            expense = (
-                userExpenses.filter(item => item.expenseType == this.state.expenseValue))
-        }
-        if (this.state.startDateUsed) {
-            expense = (
-                expense.filter(item => item.created_at >= this.state.startDate))
-
-        }
-        this.setState({ FilterUserExpense: expense });
     }
 
     setExpenseType(expenseType) {
-        this.setState({ expenseValue: expenseType, expenseUsed: 1 })
-        let expense = (
-            this.state.userExpenses.filter(item => item.expenseType == expenseType))
-
-        if (this.state.catUsed) {
-            expense = (
-                expense.filter(item => item.categories_id == this.state.catValue))
-        }
-        if (this.state.rangeUsed) {
-            expense = (
-                expense.filter(item => this.state.rangeValue[0] <= item.amount <= this.state.rangeValue[1]))
-        }
-        if (this.state.startDateUsed) {
-            expense = (
-                expense.filter(item => item.created_at >= this.state.startDate))
-        }
-        if (this.state.endDateUsed) {
-            expense = (
-                expense.filter(item => item.amount <= this.state.endDate))
-        }
-        this.setState({ FilterUserExpense: expense });
-
+        this.setState({ filterData: { expenseValue: expenseType, expenseUsed: 1, 
+            endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
+            startDate: this.state.filterData.startDate, 
+            startDateUsed: this.state.filterData.startDateUsed, 
+            catValue: this.state.filterData.catValue,
+            catUsed: this.state.filterData.catUsed,
+            rangeUsed: this.state.filterData.rangeUsed,
+            rangeValue: [100, 400],
+            filter: 1 } })
     }
 
     setcat_name(catId) {
-        this.setState({ catValue: catId, catUsed: 1 })
-        let expense = (
-            this.state.userExpenses.filter(item => item.categories_id == catId))
-
-        if (this.state.endDateUsed) {
-            expense = (
-                expense.filter(item => item.amount <= this.state.endDate))
-
-        }
-        if (this.state.rangeUsed) {
-            expense = (
-                expense.filter(item => this.state.rangeValue[0] <= item.amount <= this.state.rangeValue[1]))
-        }
-        if (this.state.expenseUsed) {
-            expense = (
-                expense.filter(item => item.expenseType == this.state.expenseValue))
-        }
-        if (this.state.startDateUsed) {
-            expense = (
-                expense.filter(item => item.created_at >= this.state.startDate))
-
-        }
-        this.setState({ FilterUserExpense: expense });
+        this.setState({ filterData: { catValue: catId, catUsed: 1,
+            endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
+            startDate: this.state.filterData.startDate, 
+            startDateUsed: this.state.filterData.startDateUsed, 
+            rangeUsed: this.state.filterData.rangeUsed,
+            rangeValue: [100, 400],
+            expenseUsed: this.state.filterData.expenseUsed,
+            expenseValue: this.state.filterData.expenseValue, 
+            filter: 1 } })
     }
 
     getRange(rangeValue1) {
-
-        this.setState({ rangeValue: rangeValue1, rangeUsed: 1 })
-        let expense = (
-            this.state.userExpenses.filter(item => item.amount <= rangeValue1[1]))
-
-        expense = (
-            expense.filter(item => item.amount >= rangeValue1[0]))
-
-        if (this.state.endDateUsed) {
-            expense = (
-                expense.filter(item => item.created_at <= this.state.endDate))
-
-        }
-        if (this.state.catUsed) {
-            expense = (
-                expense.filter(item => item.categories_id == this.state.catValue))
-        }
-        if (this.state.expenseUsed) {
-            expense = (
-                expense.filter(item => item.expenseType == this.state.expenseValue))
-        }
-        if (this.state.startDateUsed) {
-            expense = (
-                expense.filter(item => item.created_at >= this.state.startDate))
-
-        }
-        this.setState({ FilterUserExpense: expense });
+        this.setState({ filterData: { rangeValue: rangeValue1, rangeUsed: 1,
+            endDate: this.state.endDate, endDateUsed: this.state.endDateUsed,
+            startDate: this.state.filterData.startDate, 
+            startDateUsed: this.state.filterData.startDateUsed, 
+            catValue: this.state.filterData.catValue,
+            catUsed: this.state.filterData.catUsed,
+            expenseUsed: this.state.filterData.expenseUsed,
+            expenseValue: this.state.filterData.expenseValue, 
+            filter: 1 } })
     }
 
     componentDidMount() {
@@ -230,16 +178,22 @@ class Home extends Component {
         })
     }
 
+
+
+
+
     getTransaction(userID, access_token) {
+        let page = 1;
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
-        axios.get("/api/auth/userExpenses", { params: { 'user_id': userID } }).then(response => {
+        axios.get("/api/auth/userExpenses", { params: { 'user_id': userID, 'page': page } }).then(response => {
             return response;
         }).then(json => {
             if (json.data.success) {
                 let expenses = json.data.expenses;
                 this.setState({
                     userExpenses: expenses,
-                    FilterUserExpense: expenses,
+                    userExpensesData: expenses.data,
+                    FilterUserExpense: expenses.data,
                     isLoading: false,
                     success: 1
                 });
@@ -302,7 +256,7 @@ class Home extends Component {
                                 </td>
                                 <td rowSpan="5">
                                     <div >
-                                        <select className="custom-select custom-select-sm" onChange={(e) => this.setcat_name(e.target.value)}>
+                                        <select className="custom-select cusfilterData.om-select-sm" onChange={(e) => this.setcat_name(e.target.value)}>
                                             {gotData1 ? (categories1.map(categorie =>
                                                 (
                                                     <option className="dropdown-item" key={categorie.id} value={categorie.id} >{categorie.name}</option>))) : ""}
@@ -324,7 +278,16 @@ class Home extends Component {
                                     />
                                 </td>
                                 <td>
-                                    <button type="button" className="btn btn-primary" onClick={this.refreshFilterElement}>Refresh Filter</button>
+                                    <div>
+                                        <button type="button" className="btn btn-primary" onClick={this.refreshFilterElement}>
+                                            <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-arrow-repeat" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                                <path fillRule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                                            Refresh
+                                        </svg>
+                                        </button>
+
+                                    </div>
                                 </td>
                             </tr>
 
@@ -350,7 +313,10 @@ class Home extends Component {
 
                                                         <tr>
                                                             <td>
-                                                                <TransactionList transactions={userExpenses1} handlerChange={this.handleUserExpensesChange} />
+                                                                <TransactionList transactions={this.state.userExpenses}
+                                                                    handlerChange={this.handleUserExpensesChange}
+                                                                    user={this.state.user}
+                                                                    filterData={this.state.filterData} />
                                                             </td>
 
                                                         </tr>

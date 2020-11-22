@@ -122,7 +122,7 @@ input[type='number'] {
 
 .navbar-light{ background-color: "#e3f2fd"}
 
-.list li {
+.list tr {
   background-color: #fff;
   box-shadow: var(--box-shadow);
   color: #333;
@@ -133,12 +133,17 @@ input[type='number'] {
   margin: 10px 0;
 }
 
-.list li.plus {
+.list tr.plus {
   border-right: 5px solid #2ecc71;
 }
 
-.list li.minus {
+.list tr.minus {
   border-right: 5px solid #c0392b;
+}
+
+.cat_but_sort
+{
+  border: 0;
 }
 
 .delete-btn {
@@ -157,7 +162,7 @@ input[type='number'] {
   transition: opacity 0.3s ease;
 }
 
-.list li:hover .delete-btn {
+.list tr:hover .delete-btn {
   opacity: 1;
 }
 

@@ -32,6 +32,7 @@
         "react-calendar": "^3.2.1",
         "react-cookie": "^4.0.3",
         "react-flash-message": "^1.0.4",
+        "react-laravel-paginex": "^2.0.8",
         "react-router-dom": "^5.2.0"
     }
 }
