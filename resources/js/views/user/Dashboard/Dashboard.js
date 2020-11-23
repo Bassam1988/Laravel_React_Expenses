@@ -47,7 +47,8 @@ class Home extends Component {
                 catValue: -1,
                 catUsed: 0,
                 filter: 0
-            }
+            },
+            showAddComp: 0,
 
         }
         this.handleUserExpensesChange = this.handleUserExpensesChange.bind(this);
@@ -57,9 +58,18 @@ class Home extends Component {
         this.setcat_name = this.setcat_name.bind(this);
         this.getRange = this.getRange.bind(this);
         this.refreshFilterElement = this.refreshFilterElement.bind(this);
+        this.showAddTransaction = this.showAddTransaction.bind(this)
 
 
 
+    }
+
+    showAddTransaction() {
+        let show = this.state.showAddComp
+        if (show) {
+            this.setState({ showAddComp: 0 })
+        }
+        else { this.setState({ showAddComp: 1 }) }
     }
 
     refreshFilterElement() {
@@ -133,7 +143,7 @@ class Home extends Component {
                 catUsed: this.state.filterData.catUsed,
                 rangeValueStart: this.state.filterData.rangeValueStart,
                 rangeValueEnd: this.state.filterData.rangeValueEnd,
-               
+
                 filter: 1
             }
         })
@@ -348,7 +358,11 @@ class Home extends Component {
                                                 <ChartComp transactions={userExpenses1} />
                                             </td>
                                             <td>
-                                                <AddTransaction user={this.state.user} handlerChange={this.handleUserExpensesChange} />
+                                                <button type="button" className="btn btn-primary" onClick={this.showAddTransaction}>Add New Transaction</button>
+                                                {this.state.showAddComp ? (<AddTransaction user={this.state.user}
+                                                    handlerChange={this.handleUserExpensesChange}
+                                                    showAddTransaction={this.showAddTransaction} />) : ''
+                                                }
                                             </td>
                                         </tr>
                                     </tbody>
