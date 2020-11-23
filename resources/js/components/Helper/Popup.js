@@ -11,7 +11,7 @@ export const PopupExample = ({ trigger1, transaction, handlerChange }) => (
                     &times;
           </a>
                 <div className='popup'>
-                    <div className='popup\_inner'> <EditTransaction handlerChange={handlerChange} transaction={transaction} />
+                    <div className='popup\_inner'> <EditTransaction handlerChange={handlerChange} transaction={transaction} close={close} />
                     </div>
                 </div>
             </div>

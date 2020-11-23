@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { DatePickerInput } from 'rc-datepicker';
 //import { GlobalContext } from '../../context/GlobalState';
 
-export const EditTransaction = ({ user, handlerChange,showEditTransaction,transaction }) => {
+export const EditTransaction = ({ user, handlerChange,showEditTransaction,transaction,close }) => {
 
 
 
@@ -44,7 +44,7 @@ export const EditTransaction = ({ user, handlerChange,showEditTransaction,transa
           let newExpenses = json.data.expenses;
           handlerChange(newExpenses);
           alert("you edit transaction successfully")
-          showAddTransaction()
+          close()
         } else {
           alert(`Our System Failed To Register Your Account!`);
         }
