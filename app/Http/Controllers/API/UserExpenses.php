@@ -99,12 +99,14 @@ class UserExpenses extends Controller
             'user_id' => 'required',
             'categories_id' => 'required',
             'expenseType' => 'required',
+            'created_at' => 'required',
         ]);
         $expense = new Expenses([
             'amount' => $request->amount,
             'user_id' => $request->user_id,
             'categories_id' => $request->categories_id,
             'expenseType' => $request->expenseType,
+            'created_at' => $request->created_at,
 
         ]);
         $expense->save();
