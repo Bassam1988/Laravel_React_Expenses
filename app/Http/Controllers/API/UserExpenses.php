@@ -92,6 +92,8 @@ class UserExpenses extends Controller
 
     }
 
+
+
     public function addTransaction(Request $request)
     {
         $request->validate([
@@ -110,6 +112,32 @@ class UserExpenses extends Controller
 
         ]);
         $expense->save();
+        $user = User::find($request->user_id);
+        $expenses = $user->withCategories();
+        return response()->json(['expenses' => $expenses,
+            'message' => 'Successfully created user!', 'success' => '1',
+        ], 201);
+    }
+
+    public function editTransaction(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required',
+            'user_id' => 'required',
+            'categories_id' => 'required',
+            'expenseType' => 'required',
+            'created_at' => 'required',
+        ]);
+        $expense = Expenses::find($request->id);
+        $expense->update([
+            'amount' => $request->amount,
+            'user_id' => $request->user_id,
+            'categories_id' => $request->categories_id,
+            'expenseType' => $request->expenseType,
+            'created_at' => $request->created_at,
+
+        ]);
+        //$expense->update();
         $user = User::find($request->user_id);
         $expenses = $user->withCategories();
         return response()->json(['expenses' => $expenses,

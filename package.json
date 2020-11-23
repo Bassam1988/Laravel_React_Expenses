@@ -33,6 +33,7 @@
         "react-cookie": "^4.0.3",
         "react-flash-message": "^1.0.4",
         "react-laravel-paginex": "^2.0.8",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "reactjs-popup": "^2.0.4"
     }
 }

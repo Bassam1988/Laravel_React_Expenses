@@ -49,6 +49,7 @@ class Home extends Component {
                 filter: 0
             },
             showAddComp: 0,
+            showEditComp: 0,
 
         }
         this.handleUserExpensesChange = this.handleUserExpensesChange.bind(this);
@@ -59,18 +60,22 @@ class Home extends Component {
         this.getRange = this.getRange.bind(this);
         this.refreshFilterElement = this.refreshFilterElement.bind(this);
         this.showAddTransaction = this.showAddTransaction.bind(this)
+        this.showEditTransaction = this.showEditTransaction.bind(this)
 
 
 
     }
 
     showAddTransaction() {
-        let show = this.state.showAddComp
-        if (show) {
-            this.setState({ showAddComp: 0 })
-        }
-        else { this.setState({ showAddComp: 1 }) }
+      
+            this.setState({ showAddComp: !this.state.showAddComp})
+        
     }
+    showEditTransaction() {
+      
+        this.setState({ showEditComp: !this.state.showEditComp})
+    
+}
 
     refreshFilterElement() {
         this.setState({
